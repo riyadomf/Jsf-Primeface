@@ -31,6 +31,11 @@
             <classifier>jakarta</classifier>
         </dependency>
         <dependency>
+            <groupId>jakarta.platform</groupId>
+            <artifactId>jakarta.jakartaee-api</artifactId>
+            <version>10.0.0</version>
+        </dependency>
+        <dependency>
             <groupId>com.googlecode.owasp-java-html-sanitizer</groupId>
             <artifactId>owasp-java-html-sanitizer</artifactId>
             <version>20211018.1</version>
@@ -59,3 +64,5 @@
         </plugins>
     </build>
 </project>
+
+
