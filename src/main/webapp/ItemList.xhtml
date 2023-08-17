@@ -41,18 +41,18 @@
             <h3>Item Information</h3>
             <p:panelGrid columns="2">
                 <h:outputLabel for="code" value="Code:" />
-                <p:inputText id="code" value="#{items.code}" required="true" />
+                <p:inputText id="code" value="#{item.code}" required="true" />
 
                 <h:outputLabel for="name" value="Name:" />
-                <p:inputText id="name" value="#{items.name}" required="true" />
+                <p:inputText id="name" value="#{item.name}" required="true" />
 
                 <h:outputLabel for="category" value="Category:" />
-                <p:inputText id="category" value="#{items.category}" />
+                <p:inputText id="category" value="#{item.category}" />
 
                 <h:outputLabel for="price" value="Price:" />
-                <p:inputText id="price" value="#{items.price}" required="true" />
+                <p:inputText id="price" value="#{item.price}" required="true" />
 
-                <p:commandButton value="Add Item" action="#{items.addItem}" update="itemsTable" />
+                <p:commandButton value="Add Item" action="#{items.addItem(item)}" update="itemsTable" />
 
             </p:panelGrid>
 

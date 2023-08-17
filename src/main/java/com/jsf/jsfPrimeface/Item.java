@@ -1,18 +1,19 @@
 package com.jsf.jsfPrimeface;
 
+import jakarta.enterprise.context.SessionScoped;
+import jakarta.inject.Named;
+
 import java.io.Serializable;
 
+@SessionScoped
+@Named("item")
 public class Item implements Serializable {
     private String code;
     private String name;
     private String category;
     private double price;
 
-    public Item(String code, String name, String category, double price) {
-        this.code = code;
-        this.name = name;
-        this.category = category;
-        this.price = price;
+    public Item() {
     }
 
     public String getCode() {
