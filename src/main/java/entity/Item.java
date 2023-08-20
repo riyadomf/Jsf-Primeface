@@ -1,19 +1,35 @@
-package com.jsf.jsfPrimeface;
+package entity;
 
 import jakarta.enterprise.context.SessionScoped;
 import jakarta.inject.Named;
+import jakarta.persistence.Entity;
+import jakarta.persistence.GeneratedValue;
+import jakarta.persistence.GenerationType;
+import jakarta.persistence.Id;
 
 import java.io.Serializable;
 
 @SessionScoped
 @Named("item")
-public class Item implements Serializable {
+@Entity
+public class Item implements Serializable{
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    private Long id;
     private String code;
     private String name;
     private String category;
     private double price;
 
     public Item() {
+    }
+
+    public void setId(Long id) {
+        this.id = id;
+    }
+
+    public Long getId() {
+        return id;
     }
 
     public String getCode() {
@@ -47,5 +63,4 @@ public class Item implements Serializable {
     public void setPrice(double price) {
         this.price = price;
     }
-
 }

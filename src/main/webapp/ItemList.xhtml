@@ -57,7 +57,7 @@
             </p:panelGrid>
 
                 <h3>Item List</h3>
-                <p:dataTable id="itemsTable" value="#{items.items}" var="item" rows="5" paginator="true">
+                <p:dataTable id="itemsTable" value="#{items.getItems()}" var="item" rows="5" paginator="true">
                     <p:column headerText="Code">
                         <h:outputText value="#{item.code}" />
                     </p:column>

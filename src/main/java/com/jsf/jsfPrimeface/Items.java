@@ -4,27 +4,31 @@ import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.List;
 
+import entity.Item;
 import jakarta.enterprise.context.SessionScoped;
+import jakarta.faces.view.ViewScoped;
 import jakarta.inject.Named;
+import jakarta.persistence.EntityManager;
+import jakarta.persistence.EntityManagerFactory;
+import jakarta.persistence.Persistence;
+import jakarta.persistence.PersistenceContext;
 
 @SessionScoped
-@Named("items")
+@Named(value="items")
 public class Items implements Serializable {
-    private List<Item> items;
-
-    public void setItems(List<Item> items) {
-        this.items = items;
-    }
+    @PersistenceContext(unitName = "default")
+    private EntityManager entityManager;
 
     public Items() {
-        items = new ArrayList<>();
     }
 
     public void addItem(Item newItem) {
-        items.add(newItem);
+        entityManager.getTransaction().begin();
+        entityManager.persist(newItem);
+        entityManager.getTransaction().commit();
     }
 
     public List<Item> getItems() {
-        return items;
+        return entityManager.createQuery("SELECT i FROM Item i", Item.class).getResultList();
     }
 }
