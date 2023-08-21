@@ -5,6 +5,8 @@ import java.util.ArrayList;
 import java.util.List;
 
 import entity.Item;
+import jakarta.enterprise.context.ApplicationScoped;
+import jakarta.enterprise.context.RequestScoped;
 import jakarta.enterprise.context.SessionScoped;
 import jakarta.faces.view.ViewScoped;
 import jakarta.inject.Named;
@@ -13,14 +15,20 @@ import jakarta.persistence.EntityManagerFactory;
 import jakarta.persistence.Persistence;
 import jakarta.persistence.PersistenceContext;
 
-@SessionScoped
+@ApplicationScoped
 @Named(value="items")
 public class Items implements Serializable {
-    @PersistenceContext(unitName = "default")
-    private EntityManager entityManager;
+
+    EntityManagerFactory entityManagerFactory = Persistence.createEntityManagerFactory("default");
+    EntityManager entityManager = entityManagerFactory.createEntityManager();
+
+//    @PersistenceContext(unitName = "default")
+//    private EntityManager entityManager;
 
     public Items() {
     }
+
+
 
     public void addItem(Item newItem) {
         entityManager.getTransaction().begin();
@@ -29,6 +37,6 @@ public class Items implements Serializable {
     }
 
     public List<Item> getItems() {
-        return entityManager.createQuery("SELECT i FROM Item i", Item.class).getResultList();
+        return entityManager.createNamedQuery("Item.findAll", Item.class).getResultList();
     }
 }
