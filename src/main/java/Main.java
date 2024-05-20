@@ -124,13 +124,13 @@ public class Main {
                 char digitChar = integerPart.charAt(i);
 
                 int positionFromRight = integerPart.length() - 1 - i;
-                int positionInGroup = positionFromRight >= 9 ? ((positionFromRight -2 ) % 7 ) + 2 : positionFromRight % 9;
+                int positionInGroup = positionFromRight < 9 ? positionFromRight - 2 : (positionFromRight - 2) % 7;
 
-                if (tempString.length() != 0 || digitChar != '0' ) {
+                if (tempString.length() != 0 || digitChar != '0') {
                     tempString.append(digitChar);
                 }
 
-                if (positionInGroup == 7) {
+                if (positionInGroup == 5) {
                     if (tempString.length() != 0) {
                         result.append(numberToBengaliMap.get(tempString.toString()));
                         result.append(" কোটি ");
@@ -138,7 +138,7 @@ public class Main {
                     tempString.setLength(0);
                 }
 
-                if (positionInGroup == 5) {
+                if (positionInGroup == 3) {
                     if (tempString.length() != 0) {
                         result.append(numberToBengaliMap.get(tempString.toString()));
                         result.append(" লক্ষ ");
@@ -146,23 +146,22 @@ public class Main {
                     tempString.setLength(0);
                 }
 
-                if (positionInGroup == 3) {
+                if (positionInGroup == 1) {
                     if (tempString.length() != 0) {
-                        tempString.append(digitChar);
                         result.append(numberToBengaliMap.get(tempString.toString()));
                         result.append(" হাজার ");
                     }
                     tempString.setLength(0);
                 }
 
-                if (positionInGroup == 2) {
+                if (positionInGroup == 0) {
                     if (tempString.length() != 0) {
                         result.append(numberToBengaliMap.get(tempString.toString()));
                         result.append(" শত ");
                     }
                     tempString.setLength(0);
                 }
-                if (positionInGroup == 0) {
+                if (positionInGroup == -2) {
                     if (tempString.length() != 0) {
                         result.append(numberToBengaliMap.get(tempString.toString()));
                     }
