@@ -1,16 +1,111 @@
-import entity.Item;
-import jakarta.persistence.EntityManager;
-import jakarta.persistence.EntityManagerFactory;
-import jakarta.persistence.Persistence;
-
 import java.util.HashMap;
-import java.util.List;
 import java.util.Map;
+import java.util.Scanner;
 
 public class Main {
+
+
+    public static void main(String[] args) {
+
+        System.out.println("Enter a amount to convert it to bangla tk text: ");
+        while(true){
+            Scanner input = new Scanner(System.in);
+            String number = input.nextLine();
+
+            if (number.isEmpty()){
+                break;
+            }
+            String result = banglaMoneyCommaFormatter(number);
+            System.out.println(result);
+        }
+    }
+
+
+
+
+
+
     private static final Map<String, String> numberToBengaliMap = new HashMap<>();
 
+    private static String banglaMoneyCommaFormatter(String amount) {
+        StringBuilder result = new StringBuilder();
+        String[] parts = amount.split("\\.");
+        String integerPart = parts[0];
+
+        try {
+            StringBuilder tempString = new StringBuilder();
+            for (int i = 0; i < integerPart.length(); i++) {
+                char digitChar = integerPart.charAt(i);
+
+                int positionFromRight = integerPart.length() - 1 - i;
+                int positionInGroup = positionFromRight < 9 ? positionFromRight - 2 : (positionFromRight - 2) % 7;
+
+                if (!tempString.isEmpty() || digitChar != '0') {
+                    tempString.append(digitChar);
+                }
+
+                if (positionInGroup == 5) {
+                    if (!tempString.isEmpty()) {
+                        result.append(numberToBengaliMap.get(tempString.toString()));
+                        result.append(" কোটি ");
+                    }
+                    tempString.setLength(0);
+                }
+
+                if (positionInGroup == 3) {
+                    if (!tempString.isEmpty()) {
+                        result.append(numberToBengaliMap.get(tempString.toString()));
+                        result.append(" লক্ষ ");
+                    }
+                    tempString.setLength(0);
+                }
+
+                if (positionInGroup == 1) {
+                    if (!tempString.isEmpty()) {
+                        result.append(numberToBengaliMap.get(tempString.toString()));
+                        result.append(" হাজার ");
+                    }
+                    tempString.setLength(0);
+                }
+
+                if (positionInGroup == 0) {
+                    if (!tempString.isEmpty()) {
+                        result.append(numberToBengaliMap.get(tempString.toString()));
+                        result.append(" শত ");
+                    }
+                    tempString.setLength(0);
+                }
+                if (positionInGroup == -2) {
+                    if (!tempString.isEmpty()) {
+                        result.append(numberToBengaliMap.get(tempString.toString()));
+                    }
+                }
+
+            }
+            if (result.isEmpty()) {
+                result.append(numberToBengaliMap.get("0"));
+            }
+            result.append(" টাকা ");
+
+            // Add the decimal part if present
+            if (parts.length > 1) {
+                String decimalPart = parts[1];
+                String roundedDecimalPart = decimalPart.substring(0, Math.min(decimalPart.length(), 2));
+                result.append(numberToBengaliMap.get(roundedDecimalPart)).append(" পয়সা ");
+            }
+
+            result.append("মাত্র");
+        } catch (Exception e) {
+            return amount;
+        }
+
+        return result.toString();
+    }
+
+
+
     static {
+        numberToBengaliMap.put("00", "শূন্য");
         numberToBengaliMap.put("0", "শূন্য");
         numberToBengaliMap.put("1", "এক");
         numberToBengaliMap.put("2", "দুই");
@@ -111,81 +206,5 @@ public class Main {
         numberToBengaliMap.put("97", "সাতানব্বই");
         numberToBengaliMap.put("98", "আটানব্বই");
         numberToBengaliMap.put("99", "নিরানব্বই");
-    }
-
-    private static String banglaMoneyCommaFormatter(String amount) {
-        StringBuilder result = new StringBuilder();
-        String[] parts = amount.split("\\.");
-        String integerPart = parts[0];
-
-        try {
-            StringBuilder tempString = new StringBuilder();
-            for (int i = 0; i < integerPart.length(); i++) {
-                char digitChar = integerPart.charAt(i);
-
-                int positionFromRight = integerPart.length() - 1 - i;
-                int positionInGroup = positionFromRight < 9 ? positionFromRight - 2 : (positionFromRight - 2) % 7;
-
-                if (tempString.length() != 0 || digitChar != '0') {
-                    tempString.append(digitChar);
-                }
-
-                if (positionInGroup == 5) {
-                    if (tempString.length() != 0) {
-                        result.append(numberToBengaliMap.get(tempString.toString()));
-                        result.append(" কোটি ");
-                    }
-                    tempString.setLength(0);
-                }
-
-                if (positionInGroup == 3) {
-                    if (tempString.length() != 0) {
-                        result.append(numberToBengaliMap.get(tempString.toString()));
-                        result.append(" লক্ষ ");
-                    }
-                    tempString.setLength(0);
-                }
-
-                if (positionInGroup == 1) {
-                    if (tempString.length() != 0) {
-                        result.append(numberToBengaliMap.get(tempString.toString()));
-                        result.append(" হাজার ");
-                    }
-                    tempString.setLength(0);
-                }
-
-                if (positionInGroup == 0) {
-                    if (tempString.length() != 0) {
-                        result.append(numberToBengaliMap.get(tempString.toString()));
-                        result.append(" শত ");
-                    }
-                    tempString.setLength(0);
-                }
-                if (positionInGroup == -2) {
-                    if (tempString.length() != 0) {
-                        result.append(numberToBengaliMap.get(tempString.toString()));
-                    }
-                }
-
-            }
-            if (result.length() == 0) {
-                result.append(numberToBengaliMap.get("0"));
-            }
-
-            // Add the decimal part if present
-            if (parts.length > 1) {
-                result.append(".").append(parts[1]);
-            }
-        } catch (Exception e) {
-            return amount;
-        }
-
-        return result.toString();
-    }
-
-
-    public static void main(String[] args) {
-        String num = banglaMoneyCommaFormatter("1141014001410000001");
-        System.out.printf(num);
     }
 }
